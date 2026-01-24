@@ -42,4 +42,12 @@ public interface LoginService {
      * @return 验证结果
      */
     boolean authenticate(TcmUserDTO userDTO, String password);
+    
+    /**
+     * 生成JWT令牌
+     * 
+     * @param userDTO 用户信息
+     * @return JWT令牌
+     */
+    String generateToken(TcmUserDTO userDTO);
 }

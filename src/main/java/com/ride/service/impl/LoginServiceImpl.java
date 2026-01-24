@@ -76,6 +76,7 @@ public class LoginServiceImpl implements LoginService {
         LoginResponse response = new LoginResponse();
         response.setUserId(user.getId());
         response.setUsername(user.getUsername());
+        response.setEmail(user.getEmail());
         response.setRealName(user.getRealName());
         response.setAvatar(user.getAvatar());
         response.setStatus(user.getStatus());
@@ -111,6 +112,20 @@ public class LoginServiceImpl implements LoginService {
         
         // 验证密码
         return passwordEncoder.matches(password, user.getPassword());
+    }
+    
+    @Override
+    public String generateToken(TcmUserDTO userDTO) {
+        log.info("=============== Generating JWT token for user: {}", userDTO.getUsername());
+        
+        // 添加额外的声明信息
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("userId", userDTO.getId());
+        claims.put("realName", userDTO.getRealName());
+        claims.put("status", userDTO.getStatus());
+        
+        // 使用JWT工具类生成token
+        return jwtTokenUtil.generateToken(userDTO.getUsername(), claims);
     }
 
     /**

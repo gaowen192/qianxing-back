@@ -16,6 +16,9 @@ public class LoginResponse {
     @Schema(description = "用户名", example = "zhangsan")
     private String username;
     
+    @Schema(description = "用户邮箱", example = "zhangsan@example.com")
+    private String email;
+    
     @Schema(description = "用户昵称/真实姓名", example = "张三")
     private String realName;
     
@@ -52,6 +55,14 @@ public class LoginResponse {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getRealName() {
@@ -116,6 +127,7 @@ public class LoginResponse {
         return "LoginResponse{" +
                 "userId=" + userId +
                 ", username='" + username + '\'' +
+                ", email='" + email + '\'' +
                 ", realName='" + realName + '\'' +
                 ", avatar='" + avatar + '\'' +
                 ", role='" + role + '\'' +

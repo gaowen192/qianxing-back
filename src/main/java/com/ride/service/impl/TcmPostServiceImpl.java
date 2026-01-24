@@ -1,10 +1,12 @@
 package com.ride.service.impl;
 
 import com.ride.dto.TcmPostDTO;
+import com.ride.dto.TcmUserDTO;
 import com.ride.entity.TcmPost;
 import com.ride.mapper.TcmPostRepository;
 import com.ride.service.TcmPostService;
 import com.ride.service.TcmPostHistoryService;
+import com.ride.service.TcmUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +32,9 @@ public class TcmPostServiceImpl implements TcmPostService {
     
     @Autowired
     private TcmPostRepository tcmPostRepository;
+    
+    @Autowired
+    private TcmUserService tcmUserService;
     
     @Override
     public TcmPostDTO createPost(TcmPost post) {
@@ -374,6 +379,21 @@ public class TcmPostServiceImpl implements TcmPostService {
         dto.setCreatedAt(post.getCreatedAt());
         dto.setUpdatedAt(post.getUpdatedAt());
         dto.setIsUpdated(post.getIsUpdated());
+        
+        // 添加用户信息
+        try {
+            TcmUserDTO userDTO = tcmUserService.getUserById(post.getUserId());
+            dto.setUsername(userDTO.getUsername());
+            dto.setRealName(userDTO.getRealName());
+            dto.setUserTitle(userDTO.getTitle());
+        } catch (IllegalArgumentException e) {
+            log.warn("用户不存在，ID：{}", post.getUserId());
+            // 如果用户不存在，设置默认值
+            dto.setUsername("未知用户");
+            dto.setRealName("未知用户");
+            dto.setUserTitle("无");
+        }
+        
         return dto;
     }
 }

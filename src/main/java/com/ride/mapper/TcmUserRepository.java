@@ -44,6 +44,14 @@ public interface TcmUserRepository extends JpaRepository<TcmUser, Long> {
     Optional<TcmUser> findByPhone(String phone);
     
     /**
+     * 根据Google ID查找用户
+     * 
+     * @param googleId Google ID
+     * @return 用户信息
+     */
+    Optional<TcmUser> findByGoogleId(String googleId);
+    
+    /**
      * 根据状态查找用户列表
      * 
      * @param status 状态

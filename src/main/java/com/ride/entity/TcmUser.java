@@ -82,6 +82,19 @@ public class TcmUser {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
     
+    // Google用户相关字段
+    @Column(name = "google_id", unique = true, length = 255)
+    private String googleId;
+    
+    @Column(name = "google_access_token", length = 2000)
+    private String googleAccessToken;
+    
+    @Column(name = "google_refresh_token", length = 2000)
+    private String googleRefreshToken;
+    
+    @Column(name = "google_token_expiry")
+    private LocalDateTime googleTokenExpiry;
+    
     // 无参构造函数
     public TcmUser() {
     }
@@ -142,6 +155,16 @@ public class TcmUser {
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
     public LocalDateTime getUpdatedAt() { return updatedAt; }
     public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
+    
+    // Google用户相关字段的Getter和Setter方法
+    public String getGoogleId() { return googleId; }
+    public void setGoogleId(String googleId) { this.googleId = googleId; }
+    public String getGoogleAccessToken() { return googleAccessToken; }
+    public void setGoogleAccessToken(String googleAccessToken) { this.googleAccessToken = googleAccessToken; }
+    public String getGoogleRefreshToken() { return googleRefreshToken; }
+    public void setGoogleRefreshToken(String googleRefreshToken) { this.googleRefreshToken = googleRefreshToken; }
+    public LocalDateTime getGoogleTokenExpiry() { return googleTokenExpiry; }
+    public void setGoogleTokenExpiry(LocalDateTime googleTokenExpiry) { this.googleTokenExpiry = googleTokenExpiry; }
 
     // toString方法
     @Override
@@ -169,6 +192,10 @@ public class TcmUser {
                 ", lastLoginIp='" + lastLoginIp + "'" +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
+                ", googleId='" + googleId + '\'' +
+                ", googleAccessToken='" + googleAccessToken + '\'' +
+                ", googleRefreshToken='" + googleRefreshToken + '\'' +
+                ", googleTokenExpiry=" + googleTokenExpiry +
                 '}';
     }
 
@@ -199,7 +226,11 @@ public class TcmUser {
                 java.util.Objects.equals(lastLoginTime, tcmUser.lastLoginTime) &&
                 java.util.Objects.equals(lastLoginIp, tcmUser.lastLoginIp) &&
                 java.util.Objects.equals(createdAt, tcmUser.createdAt) &&
-                java.util.Objects.equals(updatedAt, tcmUser.updatedAt);
+                java.util.Objects.equals(updatedAt, tcmUser.updatedAt) &&
+                java.util.Objects.equals(googleId, tcmUser.googleId) &&
+                java.util.Objects.equals(googleAccessToken, tcmUser.googleAccessToken) &&
+                java.util.Objects.equals(googleRefreshToken, tcmUser.googleRefreshToken) &&
+                java.util.Objects.equals(googleTokenExpiry, tcmUser.googleTokenExpiry);
     }
 
     // hashCode方法
@@ -208,6 +239,6 @@ public class TcmUser {
         return java.util.Objects.hash(id, username, email, password, realName, avatar, phone, gender, 
                                     birthday, profession, hospital, department, title, licenseNumber, 
                                     qualificationLevel, status, emailVerified, userType, lastLoginTime, lastLoginIp, 
-                                    createdAt, updatedAt);
+                                    createdAt, updatedAt, googleId, googleAccessToken, googleRefreshToken, googleTokenExpiry);
     }
 }

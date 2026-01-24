@@ -28,6 +28,15 @@ public class TcmPostDTO {
     @Schema(description = "用户ID", example = "1")
     private Long userId;
     
+    @Schema(description = "用户名", example = "zhangsan")
+    private String username;
+    
+    @Schema(description = "用户真实姓名", example = "张三")
+    private String realName;
+    
+    @Schema(description = "用户头衔", example = "主任医师")
+    private String userTitle;
+    
     @Schema(description = "板块ID", example = "1")
     private Long categoryId;
     
@@ -75,7 +84,7 @@ public class TcmPostDTO {
     }
 
     // 全参构造函数
-    public TcmPostDTO(Long id, String title, String content, String summary, Long userId, Long categoryId, 
+    public TcmPostDTO(Long id, String title, String content, String summary, Long userId, String username, String realName, String userTitle, Long categoryId, 
                      String tags, Long viewCount, Long replyCount, Long likeCount, Long collectCount, 
                      Integer isTop, Integer isEssence, Integer isHot, Integer isUpdated, Integer status, 
                      LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime lastReplyTime) {
@@ -84,6 +93,9 @@ public class TcmPostDTO {
         this.content = content;
         this.summary = summary;
         this.userId = userId;
+        this.username = username;
+        this.realName = realName;
+        this.userTitle = userTitle;
         this.categoryId = categoryId;
         this.tags = tags;
         this.viewCount = viewCount;
@@ -115,6 +127,15 @@ public class TcmPostDTO {
     
     public Long getUserId() { return userId; }
     public void setUserId(Long userId) { this.userId = userId; }
+    
+    public String getUsername() { return username; }
+    public void setUsername(String username) { this.username = username; }
+    
+    public String getRealName() { return realName; }
+    public void setRealName(String realName) { this.realName = realName; }
+    
+    public String getUserTitle() { return userTitle; }
+    public void setUserTitle(String userTitle) { this.userTitle = userTitle; }
     
     public Long getCategoryId() { return categoryId; }
     public void setCategoryId(Long categoryId) { this.categoryId = categoryId; }
@@ -167,6 +188,9 @@ public class TcmPostDTO {
                 ", content='" + content + '\'' +
                 ", summary='" + summary + '\'' +
                 ", userId=" + userId +
+                ", username='" + username + '\'' +
+                ", realName='" + realName + '\'' +
+                ", userTitle='" + userTitle + '\'' +
                 ", categoryId=" + categoryId +
                 ", tags='" + tags + '\'' +
                 ", viewCount=" + viewCount +
@@ -195,6 +219,9 @@ public class TcmPostDTO {
                 java.util.Objects.equals(content, that.content) &&
                 java.util.Objects.equals(summary, that.summary) &&
                 java.util.Objects.equals(userId, that.userId) &&
+                java.util.Objects.equals(username, that.username) &&
+                java.util.Objects.equals(realName, that.realName) &&
+                java.util.Objects.equals(userTitle, that.userTitle) &&
                 java.util.Objects.equals(categoryId, that.categoryId) &&
                 java.util.Objects.equals(tags, that.tags) &&
                 java.util.Objects.equals(viewCount, that.viewCount) &&
@@ -214,7 +241,7 @@ public class TcmPostDTO {
     // hashCode方法
     @Override
     public int hashCode() {
-        return java.util.Objects.hash(id, title, content, summary, userId, categoryId, tags, viewCount, 
+        return java.util.Objects.hash(id, title, content, summary, userId, username, realName, userTitle, categoryId, tags, viewCount, 
                                     replyCount, likeCount, collectCount, isTop, isEssence, isHot, isUpdated, status, 
                                     createdAt, updatedAt, lastReplyTime);
     }

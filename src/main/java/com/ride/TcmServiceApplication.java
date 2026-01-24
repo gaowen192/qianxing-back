@@ -13,10 +13,10 @@ import org.springframework.context.event.EventListener;
  * @version 1.0.0
  */
 @SpringBootApplication(scanBasePackages= {"com.ride"})
-public class QianxingServiceApplication {
+public class TcmServiceApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(QianxingServiceApplication.class, args);
+        SpringApplication.run(TcmServiceApplication.class, args);
     }
 
     @EventListener(ApplicationReadyEvent.class)

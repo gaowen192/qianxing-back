@@ -101,7 +101,7 @@ public interface TcmUserService {
     void batchDeleteUsers(List<Long> ids);
     
     /**
-     * 检查用户名是否存在
+     * 根据用户名判断用户是否存在
      * 
      * @param username 用户名
      * @return 是否存在
@@ -109,12 +109,36 @@ public interface TcmUserService {
     boolean existsByUsername(String username);
     
     /**
-     * 检查邮箱是否存在
+     * 根据邮箱判断用户是否存在
      * 
      * @param email 邮箱
      * @return 是否存在
      */
     boolean existsByEmail(String email);
+    
+    /**
+     * 根据Google ID查找用户
+     * 
+     * @param googleId Google ID
+     * @return 用户信息
+     */
+    TcmUserDTO getUserByGoogleId(String googleId);
+    
+    /**
+     * 保存或更新Google用户信息
+     * 
+     * @param googleUser Google用户信息
+     * @return 用户信息
+     */
+    TcmUserDTO saveOrUpdateGoogleUser(TcmUser googleUser);
+    
+    /**
+     * 根据Google ID判断用户是否存在
+     * 
+     * @param googleId Google ID
+     * @return 是否存在
+     */
+    boolean existsByGoogleId(String googleId);
     
     /**
      * 获取活跃用户统计

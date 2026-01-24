@@ -270,6 +270,90 @@ public class TcmUserServiceImpl implements TcmUserService {
         return tcmUserRepository.findTop5UsersByPostCount();
     }
     
+    @Override
+    @Transactional(readOnly = true)
+    public TcmUserDTO getUserByGoogleId(String googleId) {
+        log.debug("根据Google ID查询用户：{}", googleId);
+        
+        TcmUser user = tcmUserRepository.findByGoogleId(googleId)
+                .orElseThrow(() -> new IllegalArgumentException("Google用户不存在，Google ID：" + googleId));
+        
+        return convertToDTO(user);
+    }
+    
+    @Override
+    public TcmUserDTO saveOrUpdateGoogleUser(TcmUser googleUser) {
+        log.info("保存或更新Google用户：{}", googleUser.getGoogleId());
+        
+        // 检查是否已存在该Google用户
+        TcmUser existingUser = tcmUserRepository.findByGoogleId(googleUser.getGoogleId())
+                .orElse(null);
+        
+        if (existingUser != null) {
+            // 更新现有用户信息
+            log.info("更新现有Google用户：{}", googleUser.getGoogleId());
+            
+            // 更新非空字段
+            if (googleUser.getEmail() != null) {
+                existingUser.setEmail(googleUser.getEmail());
+            }
+            if (googleUser.getUsername() != null) {
+                existingUser.setUsername(googleUser.getUsername());
+            }
+            if (googleUser.getAvatar() != null) {
+                existingUser.setAvatar(googleUser.getAvatar());
+            }
+            if (googleUser.getGoogleAccessToken() != null) {
+                existingUser.setGoogleAccessToken(googleUser.getGoogleAccessToken());
+            }
+            if (googleUser.getGoogleRefreshToken() != null) {
+                existingUser.setGoogleRefreshToken(googleUser.getGoogleRefreshToken());
+            }
+            if (googleUser.getGoogleTokenExpiry() != null) {
+                existingUser.setGoogleTokenExpiry(googleUser.getGoogleTokenExpiry());
+            }
+            if (googleUser.getLastLoginTime() != null) {
+                existingUser.setLastLoginTime(googleUser.getLastLoginTime());
+            }
+            if (googleUser.getLastLoginIp() != null) {
+                existingUser.setLastLoginIp(googleUser.getLastLoginIp());
+            }
+            
+            TcmUser updatedUser = tcmUserRepository.save(existingUser);
+            return convertToDTO(updatedUser);
+        } else {
+            // 检查邮箱是否已被其他用户使用
+            if (StringUtils.hasText(googleUser.getEmail()) && existsByEmail(googleUser.getEmail())) {
+                throw new IllegalArgumentException("邮箱已被其他用户使用：" + googleUser.getEmail());
+            }
+            
+            // 设置默认值
+            if (googleUser.getPassword() == null) {
+                googleUser.setPassword("google_user_password_not_required"); // Google用户不需要密码
+            }
+            if (googleUser.getStatus() == null) {
+                googleUser.setStatus(1); // 默认启用
+            }
+            if (googleUser.getEmailVerified() == null) {
+                googleUser.setEmailVerified(1); // Google邮箱已验证
+            }
+            if (googleUser.getUserType() == null) {
+                googleUser.setUserType(0); // 默认普通用户
+            }
+            
+            // 创建新用户
+            log.info("创建新Google用户：{}", googleUser.getGoogleId());
+            TcmUser savedUser = tcmUserRepository.save(googleUser);
+            return convertToDTO(savedUser);
+        }
+    }
+    
+    @Override
+    @Transactional(readOnly = true)
+    public boolean existsByGoogleId(String googleId) {
+        return tcmUserRepository.findByGoogleId(googleId).isPresent();
+    }
+    
     /**
      * 将TcmUser实体转换为TcmUserDTO
      * 
@@ -299,6 +383,11 @@ public class TcmUserServiceImpl implements TcmUserService {
         dto.setLastLoginIp(user.getLastLoginIp());
         dto.setCreatedAt(user.getCreatedAt());
         dto.setUpdatedAt(user.getUpdatedAt());
+        // 添加Google用户相关字段
+        dto.setGoogleId(user.getGoogleId());
+        dto.setGoogleAccessToken(user.getGoogleAccessToken());
+        dto.setGoogleRefreshToken(user.getGoogleRefreshToken());
+        dto.setGoogleTokenExpiry(user.getGoogleTokenExpiry());
         return dto;
     }
 }

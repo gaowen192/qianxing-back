@@ -32,6 +32,12 @@ public class TcmUserDTO {
     private String lastLoginIp;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    
+    // Google用户相关字段
+    private String googleId;
+    private String googleAccessToken;
+    private String googleRefreshToken;
+    private LocalDateTime googleTokenExpiry;
 
     // Getter和Setter方法
     
@@ -203,6 +209,39 @@ public class TcmUserDTO {
         this.updatedAt = updatedAt;
     }
 
+    // Google用户相关字段的Getter和Setter方法
+    public String getGoogleId() {
+        return googleId;
+    }
+
+    public void setGoogleId(String googleId) {
+        this.googleId = googleId;
+    }
+
+    public String getGoogleAccessToken() {
+        return googleAccessToken;
+    }
+
+    public void setGoogleAccessToken(String googleAccessToken) {
+        this.googleAccessToken = googleAccessToken;
+    }
+
+    public String getGoogleRefreshToken() {
+        return googleRefreshToken;
+    }
+
+    public void setGoogleRefreshToken(String googleRefreshToken) {
+        this.googleRefreshToken = googleRefreshToken;
+    }
+
+    public LocalDateTime getGoogleTokenExpiry() {
+        return googleTokenExpiry;
+    }
+
+    public void setGoogleTokenExpiry(LocalDateTime googleTokenExpiry) {
+        this.googleTokenExpiry = googleTokenExpiry;
+    }
+
     // toString方法
     @Override
     public String toString() {
@@ -228,6 +267,10 @@ public class TcmUserDTO {
                 ", lastLoginIp='" + lastLoginIp + "'" +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
+                ", googleId='" + googleId + '\'' +
+                ", googleAccessToken='" + googleAccessToken + '\'' +
+                ", googleRefreshToken='" + googleRefreshToken + '\'' +
+                ", googleTokenExpiry=" + googleTokenExpiry +
                 '}';
     }
 
@@ -257,7 +300,11 @@ public class TcmUserDTO {
                 java.util.Objects.equals(lastLoginTime, that.lastLoginTime) &&
                 java.util.Objects.equals(lastLoginIp, that.lastLoginIp) &&
                 java.util.Objects.equals(createdAt, that.createdAt) &&
-                java.util.Objects.equals(updatedAt, that.updatedAt);
+                java.util.Objects.equals(updatedAt, that.updatedAt) &&
+                java.util.Objects.equals(googleId, that.googleId) &&
+                java.util.Objects.equals(googleAccessToken, that.googleAccessToken) &&
+                java.util.Objects.equals(googleRefreshToken, that.googleRefreshToken) &&
+                java.util.Objects.equals(googleTokenExpiry, that.googleTokenExpiry);
     }
 
     // hashCode方法
@@ -266,6 +313,6 @@ public class TcmUserDTO {
         return java.util.Objects.hash(id, username, email, realName, avatar, phone, gender, birthday, 
                                     profession, hospital, department, title, licenseNumber, 
                                     qualificationLevel, status, emailVerified, userType, lastLoginTime, 
-                                    lastLoginIp, createdAt, updatedAt);
+                                    lastLoginIp, createdAt, updatedAt, googleId, googleAccessToken, googleRefreshToken, googleTokenExpiry);
     }
 }
