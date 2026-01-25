@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -41,69 +42,52 @@ public class TcmProductServiceImpl implements TcmProductService {
 
     @Override
     @Transactional
-    public TcmProductDTO createProduct(TcmProductRequest productRequest) {
+    public TcmProductDTO createProduct(TcmProductDTO productDTO, MultipartFile[] files) {
         // 创建商品主表
         TcmProduct product = new TcmProduct();
-        BeanUtils.copyProperties(productRequest, product);
+        BeanUtils.copyProperties(productDTO, product);
         product.setSales(0);
         product.setCreatedAt(LocalDateTime.now());
         product.setUpdatedAt(LocalDateTime.now());
         TcmProduct savedProduct = tcmProductRepository.save(product);
 
-        // 创建商品属性
-        if (productRequest.getAttributes() != null && !productRequest.getAttributes().isEmpty()) {
-            List<TcmProductAttribute> attributes = new ArrayList<>();
-            for (TcmProductAttributeRequest attrRequest : productRequest.getAttributes()) {
-                TcmProductAttribute attribute = new TcmProductAttribute();
-                attribute.setProductId(savedProduct.getId());
-                attribute.setAttributeName(attrRequest.getAttributeName());
-                attribute.setAttributeValue(attrRequest.getAttributeValue());
-                attribute.setSortOrder(attrRequest.getSortOrder());
-                attributes.add(attribute);
-            }
-            tcmProductAttributeRepository.saveAll(attributes);
-        }
-
-        // 创建商品规格
-        if (productRequest.getSkus() != null && !productRequest.getSkus().isEmpty()) {
-            List<TcmProductSku> skus = new ArrayList<>();
-            for (TcmProductSkuRequest skuRequest : productRequest.getSkus()) {
-                TcmProductSku sku = new TcmProductSku();
-                sku.setProductId(savedProduct.getId());
-                sku.setSkuCode(skuRequest.getSkuCode());
-                sku.setSkuName(skuRequest.getSkuName());
-                sku.setPrice(skuRequest.getPrice());
-                sku.setOriginalPrice(skuRequest.getOriginalPrice());
-                sku.setStock(skuRequest.getStock());
-                sku.setSales(0);
-                sku.setImageUrl(skuRequest.getImageUrl());
-                sku.setAttributes(skuRequest.getAttributes());
-                sku.setStatus(skuRequest.getStatus());
-                skus.add(sku);
-            }
-            tcmProductSkuRepository.saveAll(skus);
-        }
-
-        // 创建商品图片
-        if (productRequest.getImages() != null && !productRequest.getImages().isEmpty()) {
+        // 处理图片上传
+        if (files != null && files.length > 0) {
             List<TcmProductImage> images = new ArrayList<>();
-            for (TcmProductImageRequest imageRequest : productRequest.getImages()) {
-                TcmProductImage image = new TcmProductImage();
-                image.setProductId(savedProduct.getId());
-                image.setSkuId(imageRequest.getSkuId());
-                image.setImagePath(imageRequest.getImagePath());
-                image.setImageType(imageRequest.getImageType());
-                image.setSortOrder(imageRequest.getSortOrder());
-                image.setRemark(imageRequest.getRemark());
-                images.add(image);
+            for (int i = 0; i < files.length; i++) {
+                MultipartFile file = files[i];
+                if (!file.isEmpty()) {
+                    // 上传图片并获取图片路径
+                    TcmProductImageDTO imageDTO = tcmImageService.uploadImage(file, null);
+                    String imagePath = imageDTO.getImagePath();
+                    
+                    // 创建商品图片记录
+                    TcmProductImage image = new TcmProductImage();
+                    image.setProductId(savedProduct.getId());
+                    image.setImagePath(imagePath);
+                    image.setImageType(1); // 1-主图，2-副图，3-详情图
+                    image.setSortOrder(i);
+                    images.add(image);
+                }
             }
-            tcmProductImageRepository.saveAll(images);
+            if (!images.isEmpty()) {
+                tcmProductImageRepository.saveAll(images);
+                
+                // 设置主图路径
+                if (!images.isEmpty()) {
+                    product.setMainImage(images.get(0).getImagePath());
+                    // 设置副图路径
+                    if (images.size() > 1) product.setSubImage1(images.get(1).getImagePath());
+                    if (images.size() > 2) product.setSubImage2(images.get(2).getImagePath());
+                    if (images.size() > 3) product.setSubImage3(images.get(3).getImagePath());
+                    if (images.size() > 4) product.setSubImage4(images.get(4).getImagePath());
+                    if (images.size() > 5) product.setSubImage5(images.get(5).getImagePath());
+                    tcmProductRepository.save(product);
+                }
+            }
         }
 
-        // 绑定已上传的图片
-        if (productRequest.getImageIds() != null && !productRequest.getImageIds().isEmpty()) {
-            tcmImageService.bindImagesToProduct(productRequest.getImageIds(), savedProduct.getId());
-        }
+
 
         // 转换为DTO并返回
         return convertToDTO(savedProduct);
@@ -111,7 +95,7 @@ public class TcmProductServiceImpl implements TcmProductService {
 
     @Override
     @Transactional
-    public TcmProductDTO updateProduct(Long id, TcmProductRequest productRequest) {
+    public TcmProductDTO updateProduct(Long id, TcmProductDTO productDTO) {
         // 查找商品
         Optional<TcmProduct> optionalProduct = tcmProductRepository.findById(id);
         if (!optionalProduct.isPresent()) {
@@ -120,76 +104,14 @@ public class TcmProductServiceImpl implements TcmProductService {
 
         TcmProduct product = optionalProduct.get();
         // 更新商品主表
-        BeanUtils.copyProperties(productRequest, product);
+        BeanUtils.copyProperties(productDTO, product);
         product.setUpdatedAt(LocalDateTime.now());
         TcmProduct updatedProduct = tcmProductRepository.save(product);
 
-        // 更新商品属性
-        if (productRequest.getAttributes() != null) {
-            // 删除旧属性
-            tcmProductAttributeRepository.deleteByProductId(id);
-            // 添加新属性
-            List<TcmProductAttribute> attributes = new ArrayList<>();
-            for (TcmProductAttributeRequest attrRequest : productRequest.getAttributes()) {
-                TcmProductAttribute attribute = new TcmProductAttribute();
-                attribute.setProductId(id);
-                attribute.setAttributeName(attrRequest.getAttributeName());
-                attribute.setAttributeValue(attrRequest.getAttributeValue());
-                attribute.setSortOrder(attrRequest.getSortOrder());
-                attributes.add(attribute);
-            }
-            tcmProductAttributeRepository.saveAll(attributes);
-        }
 
-        // 更新商品规格
-        if (productRequest.getSkus() != null) {
-            // 删除旧规格
-            tcmProductSkuRepository.deleteByProductId(id);
-            // 添加新规格
-            List<TcmProductSku> skus = new ArrayList<>();
-            for (TcmProductSkuRequest skuRequest : productRequest.getSkus()) {
-                TcmProductSku sku = new TcmProductSku();
-                sku.setProductId(id);
-                sku.setSkuCode(skuRequest.getSkuCode());
-                sku.setSkuName(skuRequest.getSkuName());
-                sku.setPrice(skuRequest.getPrice());
-                sku.setOriginalPrice(skuRequest.getOriginalPrice());
-                sku.setStock(skuRequest.getStock());
-                sku.setSales(0); // 重置销量
-                sku.setImageUrl(skuRequest.getImageUrl());
-                sku.setAttributes(skuRequest.getAttributes());
-                sku.setStatus(skuRequest.getStatus());
-                skus.add(sku);
-            }
-            tcmProductSkuRepository.saveAll(skus);
-        }
-
-        // 更新商品图片
-        if (productRequest.getImages() != null) {
-            // 删除旧图片
-            tcmProductImageRepository.deleteByProductId(id);
-            // 添加新图片
-            List<TcmProductImage> images = new ArrayList<>();
-            for (TcmProductImageRequest imageRequest : productRequest.getImages()) {
-                TcmProductImage image = new TcmProductImage();
-                image.setProductId(id);
-                image.setSkuId(imageRequest.getSkuId());
-                image.setImagePath(imageRequest.getImagePath());
-                image.setImageType(imageRequest.getImageType());
-                image.setSortOrder(imageRequest.getSortOrder());
-                image.setRemark(imageRequest.getRemark());
-                images.add(image);
-            }
-            tcmProductImageRepository.saveAll(images);
-        }
 
         // 绑定已上传的图片
-        if (productRequest.getImageIds() != null && !productRequest.getImageIds().isEmpty()) {
-            // 先删除旧图片关联
-            tcmProductImageRepository.deleteByProductId(id);
-            // 绑定新图片
-            tcmImageService.bindImagesToProduct(productRequest.getImageIds(), id);
-        }
+        // 注意：这里需要在 TcmProductDTO 中添加 imageIds 字段
 
         // 转换为DTO并返回
         return convertToDTO(updatedProduct);
@@ -281,37 +203,6 @@ public class TcmProductServiceImpl implements TcmProductService {
     private TcmProductDTO convertToDTO(TcmProduct product) {
         TcmProductDTO productDTO = new TcmProductDTO();
         BeanUtils.copyProperties(product, productDTO);
-
-        // 添加商品属性
-        List<TcmProductAttribute> attributes = tcmProductAttributeRepository.findByProductId(product.getId());
-        List<TcmProductAttributeDTO> attributeDTOs = new ArrayList<>();
-        for (TcmProductAttribute attribute : attributes) {
-            TcmProductAttributeDTO attributeDTO = new TcmProductAttributeDTO();
-            BeanUtils.copyProperties(attribute, attributeDTO);
-            attributeDTOs.add(attributeDTO);
-        }
-        productDTO.setAttributes(attributeDTOs);
-
-        // 添加商品规格
-        List<TcmProductSku> skus = tcmProductSkuRepository.findByProductId(product.getId());
-        List<TcmProductSkuDTO> skuDTOs = new ArrayList<>();
-        for (TcmProductSku sku : skus) {
-            TcmProductSkuDTO skuDTO = new TcmProductSkuDTO();
-            BeanUtils.copyProperties(sku, skuDTO);
-            skuDTOs.add(skuDTO);
-        }
-        productDTO.setSkus(skuDTOs);
-
-        // 添加商品图片
-        List<TcmProductImage> images = tcmProductImageRepository.findByProductId(product.getId());
-        List<TcmProductImageDTO> imageDTOs = new ArrayList<>();
-        for (TcmProductImage image : images) {
-            TcmProductImageDTO imageDTO = new TcmProductImageDTO();
-            BeanUtils.copyProperties(image, imageDTO);
-            imageDTOs.add(imageDTO);
-        }
-        productDTO.setImages(imageDTOs);
-
         return productDTO;
     }
 }

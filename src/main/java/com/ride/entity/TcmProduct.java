@@ -35,6 +35,21 @@ public class TcmProduct {
     @Column(name = "main_image", length = 255)
     private String mainImage;
 
+    @Column(name = "sub_image_1", length = 255)
+    private String subImage1;
+
+    @Column(name = "sub_image_2", length = 255)
+    private String subImage2;
+
+    @Column(name = "sub_image_3", length = 255)
+    private String subImage3;
+
+    @Column(name = "sub_image_4", length = 255)
+    private String subImage4;
+
+    @Column(name = "sub_image_5", length = 255)
+    private String subImage5;
+
     @Column(name = "price", precision = 10, scale = 2)
     private BigDecimal price;
 
@@ -136,6 +151,46 @@ public class TcmProduct {
 
     public void setMainImage(String mainImage) {
         this.mainImage = mainImage;
+    }
+
+    public String getSubImage1() {
+        return subImage1;
+    }
+
+    public void setSubImage1(String subImage1) {
+        this.subImage1 = subImage1;
+    }
+
+    public String getSubImage2() {
+        return subImage2;
+    }
+
+    public void setSubImage2(String subImage2) {
+        this.subImage2 = subImage2;
+    }
+
+    public String getSubImage3() {
+        return subImage3;
+    }
+
+    public void setSubImage3(String subImage3) {
+        this.subImage3 = subImage3;
+    }
+
+    public String getSubImage4() {
+        return subImage4;
+    }
+
+    public void setSubImage4(String subImage4) {
+        this.subImage4 = subImage4;
+    }
+
+    public String getSubImage5() {
+        return subImage5;
+    }
+
+    public void setSubImage5(String subImage5) {
+        this.subImage5 = subImage5;
     }
 
     public BigDecimal getPrice() {
@@ -260,6 +315,11 @@ public class TcmProduct {
                 ", userId=" + userId +
                 ", brand='" + brand + '\'' +
                 ", mainImage='" + mainImage + '\'' +
+                ", subImage1='" + subImage1 + '\'' +
+                ", subImage2='" + subImage2 + '\'' +
+                ", subImage3='" + subImage3 + '\'' +
+                ", subImage4='" + subImage4 + '\'' +
+                ", subImage5='" + subImage5 + '\'' +
                 ", price=" + price +
                 ", stock=" + stock +
                 ", sales=" + sales +

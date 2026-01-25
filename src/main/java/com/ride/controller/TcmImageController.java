@@ -28,10 +28,6 @@ public class TcmImageController {
     /**
      * 上传图片
      * @param file 图片文件
-     * @param productId 商品ID
-     * @param skuId SKU ID
-     * @param imageType 图片类型
-     * @param sortOrder 排序
      * @param remark 备注
      * @return 图片DTO
      */
@@ -39,12 +35,8 @@ public class TcmImageController {
     @Operation(summary = "上传图片", description = "上传图片并保存到数据库，返回图片信息")
     public ResponseEntity<TcmProductImageDTO> uploadImage(
             @Parameter(description = "图片文件", required = true) @RequestParam("file") MultipartFile file,
-            @Parameter(description = "商品ID") @RequestParam(required = false) Long productId,
-            @Parameter(description = "SKU ID") @RequestParam(required = false) Long skuId,
-            @Parameter(description = "图片类型") @RequestParam(required = false, defaultValue = "0") Integer imageType,
-            @Parameter(description = "排序") @RequestParam(required = false, defaultValue = "0") Integer sortOrder,
             @Parameter(description = "备注") @RequestParam(required = false) String remark) {
-        TcmProductImageDTO imageDTO = tcmImageService.uploadImage(file, productId, skuId, imageType, sortOrder, remark);
+        TcmProductImageDTO imageDTO = tcmImageService.uploadImage(file, remark);
         return new ResponseEntity<>(imageDTO, HttpStatus.CREATED);
     }
 

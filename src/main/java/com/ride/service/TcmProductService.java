@@ -1,9 +1,9 @@
 package com.ride.service;
 
 import com.ride.dto.TcmProductDTO;
-import com.ride.dto.TcmProductRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -15,18 +15,19 @@ public interface TcmProductService {
 
     /**
      * 创建商品
-     * @param productRequest 商品请求数据
+     * @param productDTO 商品数据
+     * @param files 商品图片文件
      * @return 商品DTO
      */
-    TcmProductDTO createProduct(TcmProductRequest productRequest);
+    TcmProductDTO createProduct(TcmProductDTO productDTO, MultipartFile[] files);
 
     /**
      * 更新商品
      * @param id 商品ID
-     * @param productRequest 商品请求数据
+     * @param productDTO 商品数据
      * @return 商品DTO
      */
-    TcmProductDTO updateProduct(Long id, TcmProductRequest productRequest);
+    TcmProductDTO updateProduct(Long id, TcmProductDTO productDTO);
 
     /**
      * 根据ID查询商品

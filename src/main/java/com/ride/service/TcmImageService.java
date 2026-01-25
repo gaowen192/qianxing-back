@@ -14,14 +14,10 @@ public interface TcmImageService {
     /**
      * 上传图片
      * @param file 图片文件
-     * @param productId 商品ID
-     * @param skuId SKU ID
-     * @param imageType 图片类型
-     * @param sortOrder 排序
      * @param remark 备注
      * @return 图片DTO
      */
-    TcmProductImageDTO uploadImage(MultipartFile file, Long productId, Long skuId, Integer imageType, Integer sortOrder, String remark);
+    TcmProductImageDTO uploadImage(MultipartFile file, String remark);
 
     /**
      * 获取用户未绑定的图片列表

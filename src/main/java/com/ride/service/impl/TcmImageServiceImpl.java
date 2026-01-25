@@ -29,7 +29,7 @@ public class TcmImageServiceImpl implements TcmImageService {
     private TcmProductImageRepository tcmProductImageRepository;
 
     @Override
-    public TcmProductImageDTO uploadImage(MultipartFile file, Long productId, Long skuId, Integer imageType, Integer sortOrder, String remark) {
+    public TcmProductImageDTO uploadImage(MultipartFile file, String remark) {
         try {
             // 确保文件不为空
             if (file.isEmpty()) {
@@ -54,11 +54,11 @@ public class TcmImageServiceImpl implements TcmImageService {
             
             // 创建图片实体
             TcmProductImage image = new TcmProductImage();
-            image.setProductId(productId);
-            image.setSkuId(skuId);
+            image.setProductId(null); // 初始化为null，后续在绑定商品时设置
+            image.setSkuId(null); // 初始化为null，后续在绑定SKU时设置
             image.setImagePath(filePath.toString()); // 保存文件路径
-            image.setImageType(imageType != null ? imageType : 0);
-            image.setSortOrder(sortOrder != null ? sortOrder : 0);
+            image.setImageType(0); // 默认图片类型
+            image.setSortOrder(0); // 默认排序
             image.setRemark(remark);
             
             // 保存图片

@@ -2,7 +2,6 @@ package com.ride.dto;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.List;
 
 /**
  * 商品DTO类
@@ -17,6 +16,11 @@ public class TcmProductDTO {
     private Long userId;
     private String brand;
     private String mainImage;
+    private String subImage1;
+    private String subImage2;
+    private String subImage3;
+    private String subImage4;
+    private String subImage5;
     private BigDecimal price;
     private Integer stock;
     private Integer sales;
@@ -30,13 +34,6 @@ public class TcmProductDTO {
     private String origin;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-
-    // 商品属性列表
-    private List<TcmProductAttributeDTO> attributes;
-    // 商品规格列表
-    private List<TcmProductSkuDTO> skus;
-    // 商品图片列表
-    private List<TcmProductImageDTO> images;
 
     // Getter和Setter方法
     public Long getId() {
@@ -93,6 +90,46 @@ public class TcmProductDTO {
 
     public void setMainImage(String mainImage) {
         this.mainImage = mainImage;
+    }
+
+    public String getSubImage1() {
+        return subImage1;
+    }
+
+    public void setSubImage1(String subImage1) {
+        this.subImage1 = subImage1;
+    }
+
+    public String getSubImage2() {
+        return subImage2;
+    }
+
+    public void setSubImage2(String subImage2) {
+        this.subImage2 = subImage2;
+    }
+
+    public String getSubImage3() {
+        return subImage3;
+    }
+
+    public void setSubImage3(String subImage3) {
+        this.subImage3 = subImage3;
+    }
+
+    public String getSubImage4() {
+        return subImage4;
+    }
+
+    public void setSubImage4(String subImage4) {
+        this.subImage4 = subImage4;
+    }
+
+    public String getSubImage5() {
+        return subImage5;
+    }
+
+    public void setSubImage5(String subImage5) {
+        this.subImage5 = subImage5;
     }
 
     public BigDecimal getPrice() {
@@ -199,30 +236,6 @@ public class TcmProductDTO {
         this.updatedAt = updatedAt;
     }
 
-    public List<TcmProductAttributeDTO> getAttributes() {
-        return attributes;
-    }
-
-    public void setAttributes(List<TcmProductAttributeDTO> attributes) {
-        this.attributes = attributes;
-    }
-
-    public List<TcmProductSkuDTO> getSkus() {
-        return skus;
-    }
-
-    public void setSkus(List<TcmProductSkuDTO> skus) {
-        this.skus = skus;
-    }
-
-    public List<TcmProductImageDTO> getImages() {
-        return images;
-    }
-
-    public void setImages(List<TcmProductImageDTO> images) {
-        this.images = images;
-    }
-
     @Override
     public String toString() {
         return "TcmProductDTO{" +
@@ -233,6 +246,11 @@ public class TcmProductDTO {
                 ", userId=" + userId +
                 ", brand='" + brand + '\'' +
                 ", mainImage='" + mainImage + '\'' +
+                ", subImage1='" + subImage1 + '\'' +
+                ", subImage2='" + subImage2 + '\'' +
+                ", subImage3='" + subImage3 + '\'' +
+                ", subImage4='" + subImage4 + '\'' +
+                ", subImage5='" + subImage5 + '\'' +
                 ", price=" + price +
                 ", stock=" + stock +
                 ", sales=" + sales +
@@ -246,9 +264,6 @@ public class TcmProductDTO {
                 ", origin='" + origin + '\'' +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
-                ", attributes=" + attributes +
-                ", skus=" + skus +
-                ", images=" + images +
                 '}';
     }
 }
