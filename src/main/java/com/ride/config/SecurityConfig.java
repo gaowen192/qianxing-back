@@ -77,7 +77,7 @@ public class SecurityConfig {
                 .requestMatchers("/auth/**", "/tcm/posts/category/**","/tcm/videos", "/tcm/videos/*/thumbnail",
                 "/tcm/videos/*/thumbnail-url","tcm/posts/hot", "/uploads/**","tcm/posts","tcm/videos/*/comments",
                         "tcm/posts/all","/tcm/replies/post/*","/tcm/posts/*",
-                        "/tcm/videos/*","/tcm/articles/list","tcm/articles/*"
+                        "/tcm/videos/*","/tcm/articles/list","tcm/articles/*","tcm/products"
                 )
                 .permitAll()
                 // 其他所有请求都需要认证
