@@ -184,7 +184,7 @@ public interface TcmPostRepository extends JpaRepository<TcmPost, Long> {
      * @param pageable 分页参数
      * @return 分页帖子列表
      */
-    @Query("SELECT p FROM TcmPost p WHERE (p.title LIKE CONCAT('%', :title, '%') OR p.content LIKE CONCAT('%', :content, '%')) AND p.status = 1")
+    @Query("SELECT p FROM TcmPost p WHERE (p.title LIKE CONCAT('%', :title, '%') OR p.content LIKE CONCAT('%', :content, '%')) AND p.status = 1 ORDER BY p.createdAt DESC")
     Page<TcmPost> findByTitleContainingOrContentContaining(@Param("title") String title, @Param("content") String content, Pageable pageable);
     
     /**

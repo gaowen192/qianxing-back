@@ -30,6 +30,7 @@ CREATE TABLE `tcm_users` (
   `qualification_level` tinyint(1) DEFAULT NULL COMMENT '资质等级：1-实习生，2-住院医，3-主治医，4-副主任医，5-主任医',
   `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '状态：0-禁用，1-正常',
   `email_verified` tinyint(1) NOT NULL DEFAULT '0' COMMENT '邮箱是否验证：0-否，1-是',
+  `has_shop` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否开店：0-否，1-是',
   `last_login_time` timestamp NULL DEFAULT NULL COMMENT '最后登录时间',
   `last_login_ip` varchar(45) DEFAULT NULL COMMENT '最后登录IP',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',

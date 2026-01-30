@@ -53,6 +53,10 @@ public class TcmProductController {
             @RequestParam(value = "categoryId", required = false) Long categoryId,
             @Parameter(description = "用户ID")
             @RequestParam(value = "userId", required = false) Long userId,
+            @Parameter(description = "店铺ID")
+            @RequestParam(value = "shopId", required = false) Long shopId,
+            @Parameter(description = "店铺名称")
+            @RequestParam(value = "shopName", required = false) String shopName,
             @Parameter(description = "品牌")
             @RequestParam(value = "brand", required = false) String brand,
             @Parameter(description = "价格")
@@ -84,6 +88,8 @@ public class TcmProductController {
             productDTO.setDescription(description);
             productDTO.setCategoryId(categoryId);
             productDTO.setUserId(userId);
+            productDTO.setShopId(shopId);
+            productDTO.setShopName(shopName);
             productDTO.setBrand(brand);
             productDTO.setPrice(price);
             productDTO.setStock(stock);
@@ -180,6 +186,10 @@ public class TcmProductController {
             @RequestParam(value = "categoryId", required = false) Long categoryId,
             @Parameter(description = "品牌")
             @RequestParam(value = "brand", required = false) String brand,
+            @Parameter(description = "店铺ID")
+            @RequestParam(value = "shopId", required = false) Long shopId,
+            @Parameter(description = "店铺名称")
+            @RequestParam(value = "shopName", required = false) String shopName,
             @Parameter(description = "状态，1-上架，0-下架")
             @RequestParam(value = "status", required = false, defaultValue = "1") Integer status,
             @Parameter(description = "页码", example = "1")
@@ -190,13 +200,13 @@ public class TcmProductController {
             @RequestParam(value = "sort", required = false, defaultValue = "createdAt") String sort,
             @Parameter(description = "排序方式，asc-升序，desc-降序", example = "desc")
             @RequestParam(value = "order", required = false, defaultValue = "desc") String order) {
-        logger.info("===============Received request to list products, name: {}, categoryId: {}, brand: {}, status: {}, page: {}, size: {}, sort: {}, order: {}", 
-                name, categoryId, brand, status, page, size, sort, order);
+        logger.info("===============Received request to list products, name: {}, categoryId: {}, brand: {}, shopId: {}, shopName: {}, status: {}, page: {}, size: {}, sort: {}, order: {}", 
+                name, categoryId, brand, shopId, shopName, status, page, size, sort, order);
         try {
             Sort.Direction direction = order.equals("asc") ? Sort.Direction.ASC : Sort.Direction.DESC;
             Pageable pageable = PageRequest.of(page - 1, size, Sort.by(direction, sort));
 
-            Page<TcmProductDTO> products = tcmProductService.getProducts(name, categoryId, brand, status, pageable);
+            Page<TcmProductDTO> products = tcmProductService.getProducts(name, categoryId, brand, shopId, shopName, status, pageable);
             return Result.success("商品查询成功", products);
         } catch (Exception e) {
             logger.error("===============Error listing products", e);

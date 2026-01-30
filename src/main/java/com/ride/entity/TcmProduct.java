@@ -29,6 +29,15 @@ public class TcmProduct {
     @Column(name = "user_id")
     private Long userId;
 
+    @Column(name = "shop_id")
+    private Long shopId;
+
+    @Column(name = "shop_name", length = 255)
+    private String shopName;
+
+    @Column(name = "shop_status")
+    private Integer shopStatus;
+
     @Column(name = "brand", length = 100)
     private String brand;
 
@@ -135,6 +144,30 @@ public class TcmProduct {
 
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+    public Long getShopId() {
+        return shopId;
+    }
+
+    public void setShopId(Long shopId) {
+        this.shopId = shopId;
+    }
+
+    public String getShopName() {
+        return shopName;
+    }
+
+    public void setShopName(String shopName) {
+        this.shopName = shopName;
+    }
+
+    public Integer getShopStatus() {
+        return shopStatus;
+    }
+
+    public void setShopStatus(Integer shopStatus) {
+        this.shopStatus = shopStatus;
     }
 
     public String getBrand() {
@@ -313,6 +346,9 @@ public class TcmProduct {
                 ", description='" + description + '\'' +
                 ", categoryId=" + categoryId +
                 ", userId=" + userId +
+                ", shopId=" + shopId +
+                ", shopName='" + shopName + '\'' +
+                ", shopStatus=" + shopStatus +
                 ", brand='" + brand + '\'' +
                 ", mainImage='" + mainImage + '\'' +
                 ", subImage1='" + subImage1 + '\'' +

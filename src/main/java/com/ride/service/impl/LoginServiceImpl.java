@@ -81,6 +81,7 @@ public class LoginServiceImpl implements LoginService {
         response.setAvatar(user.getAvatar());
         response.setStatus(user.getStatus());
         response.setUserType(user.getUserType());
+        response.setHasShop(user.getHasShop());
         response.setAccessToken(accessToken);
         response.setTokenExpireTime(LocalDateTime.now().plusHours(24)); // 24小时过期
         

@@ -5,6 +5,8 @@ CREATE TABLE IF NOT EXISTS tcm_products (
     description TEXT COMMENT '商品描述',
     category_id BIGINT COMMENT '分类ID',
     user_id BIGINT COMMENT '用户ID，表示谁上传的商品',
+    shop_id BIGINT COMMENT '店铺ID',
+    shop_name VARCHAR(255) COMMENT '店铺名称',
     brand VARCHAR(100) COMMENT '品牌',
     main_image VARCHAR(255) COMMENT '主图路径',
     sub_image_1 VARCHAR(255) COMMENT '副图路径1',

@@ -39,6 +39,9 @@ public class LoginResponse {
     
     @Schema(description = "用户类型(0-普通用户，1-医生)", example = "0", allowableValues = {"0", "1"})
     private Integer userType;
+    
+    @Schema(description = "是否开店(0-否，1-是)", example = "0", allowableValues = {"0", "1"})
+    private Integer hasShop;
 
     // Getter和Setter方法
     public Long getUserId() {
@@ -121,6 +124,14 @@ public class LoginResponse {
         this.userType = userType;
     }
     
+    public Integer getHasShop() {
+        return hasShop;
+    }
+    
+    public void setHasShop(Integer hasShop) {
+        this.hasShop = hasShop;
+    }
+    
     // toString方法
     @Override
     public String toString() {
@@ -135,6 +146,7 @@ public class LoginResponse {
                 ", tokenExpireTime=" + tokenExpireTime +
                 ", status=" + status +
                 ", userType=" + userType +
+                ", hasShop=" + hasShop +
                 '}';
     }
 }

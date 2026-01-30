@@ -191,6 +191,7 @@ public class LoginController {
             loginResponse.setAvatar(userDTO.getAvatar());
             loginResponse.setStatus(userDTO.getStatus());
             loginResponse.setUserType(userDTO.getUserType());
+            loginResponse.setHasShop(userDTO.getHasShop());
             loginResponse.setAccessToken(loginService.generateToken(userDTO));
             loginResponse.setTokenExpireTime(LocalDateTime.now().plusHours(24)); // 24小时过期
             

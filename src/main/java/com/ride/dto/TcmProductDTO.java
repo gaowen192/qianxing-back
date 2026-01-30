@@ -14,6 +14,8 @@ public class TcmProductDTO {
     private String description;
     private Long categoryId;
     private Long userId;
+    private Long shopId;
+    private String shopName;
     private String brand;
     private String mainImage;
     private String subImage1;
@@ -74,6 +76,22 @@ public class TcmProductDTO {
 
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+    public Long getShopId() {
+        return shopId;
+    }
+
+    public void setShopId(Long shopId) {
+        this.shopId = shopId;
+    }
+
+    public String getShopName() {
+        return shopName;
+    }
+
+    public void setShopName(String shopName) {
+        this.shopName = shopName;
     }
 
     public String getBrand() {

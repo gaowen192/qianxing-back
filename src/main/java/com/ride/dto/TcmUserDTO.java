@@ -27,6 +27,7 @@ public class TcmUserDTO {
     private Integer qualificationLevel; // 1-实习生，2-住院医，3-主治医，4-副主任医，5-主任医
     private Integer status; // 0-禁用，1-正常
     private Integer emailVerified; // 0-否，1-是
+    private Integer hasShop; // 0-否，1-是
     private Integer userType; // 0-普通用户，1-医生
     private LocalDateTime lastLoginTime;
     private String lastLoginIp;
@@ -167,6 +168,14 @@ public class TcmUserDTO {
 
     public void setEmailVerified(Integer emailVerified) {
         this.emailVerified = emailVerified;
+    }
+
+    public Integer getHasShop() {
+        return hasShop;
+    }
+
+    public void setHasShop(Integer hasShop) {
+        this.hasShop = hasShop;
     }
 
     public Integer getUserType() {

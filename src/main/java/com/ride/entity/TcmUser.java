@@ -67,6 +67,9 @@ public class TcmUser {
     @Column(name = "email_verified", nullable = false)
     private Integer emailVerified = 0; // 0-否，1-是
     
+    @Column(name = "has_shop", nullable = false)
+    private Integer hasShop = 0; // 0-否，1-是
+    
     @Column(name = "user_type", nullable = false)
     private Integer userType = 0; // 0-普通用户，1-医生
     
@@ -145,6 +148,8 @@ public class TcmUser {
     public void setStatus(Integer status) { this.status = status; }
     public Integer getEmailVerified() { return emailVerified; }
     public void setEmailVerified(Integer emailVerified) { this.emailVerified = emailVerified; }
+    public Integer getHasShop() { return hasShop; }
+    public void setHasShop(Integer hasShop) { this.hasShop = hasShop; }
     public Integer getUserType() { return userType; }
     public void setUserType(Integer userType) { this.userType = userType; }
     public LocalDateTime getLastLoginTime() { return lastLoginTime; }
@@ -187,6 +192,7 @@ public class TcmUser {
                 ", qualificationLevel=" + qualificationLevel +
                 ", status=" + status +
                 ", emailVerified=" + emailVerified +
+                ", hasShop=" + hasShop +
                 ", userType=" + userType +
                 ", lastLoginTime=" + lastLoginTime +
                 ", lastLoginIp='" + lastLoginIp + "'" +

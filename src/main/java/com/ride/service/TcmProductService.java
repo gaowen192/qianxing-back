@@ -47,11 +47,13 @@ public interface TcmProductService {
      * @param name 商品名称
      * @param categoryId 分类ID
      * @param brand 品牌
+     * @param shopId 店铺ID
+     * @param shopName 店铺名称
      * @param status 状态
      * @param pageable 分页参数
      * @return 商品分页列表
      */
-    Page<TcmProductDTO> getProducts(String name, Long categoryId, String brand, Integer status, Pageable pageable);
+    Page<TcmProductDTO> getProducts(String name, Long categoryId, String brand, Long shopId, String shopName, Integer status, Pageable pageable);
 
     /**
      * 查询热销商品
